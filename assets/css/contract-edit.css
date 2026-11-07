@@ -46,7 +46,11 @@ body { overflow: hidden; }
 .studio input[type=text]:focus, .studio select:focus { outline: 1px solid var(--hot); outline-offset: 1px; }
 .studio input[type=range] { width: 100%; accent-color: var(--amb); }
 .studio .pre { display: grid; place-items: center; min-height: 128px; padding: 20px 10px; overflow: hidden; background: repeating-linear-gradient(transparent 0 27px, rgba(29,106,138,.09) 27px 28px), #f8f5ed; border: 1px solid #b5945a; }
+.studio .pre .fit { position: relative; }
+.studio .pre .scaler { position: absolute; left: 50%; top: 50%; }
 .studio .pre .pstamp { position: relative; }
+.studio .pre[data-scaled="1"]::after { content: "Preview scaled to fit"; position: absolute; right: 6px; bottom: 3px; font: 400 9px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #8a6a1e; }
+.studio .pre { position: relative; }
 .studio .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
 #sMode, #sAdd { grid-column: 1 / -1; padding: 10px 8px; line-height: 1.25; }
 .studio .hint { margin: 10px 0 0; font: 400 12px/1.45 var(--ui); letter-spacing: .02em; text-transform: none; color: var(--dim); }

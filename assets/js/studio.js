@@ -27,7 +27,7 @@
     '<div class="row2"><button type="button" class="btn small primary" id="sMode">Click here to engage stamp mode</button><button type="button" class="btn small" id="sAdd">Movable stamp</button></div>' +
     '<p class="hint" id="sHint">Stamp mode: your cursor carries the stamp, click anywhere on the page to press it. Esc to put it down.</p>' +
     '<div class="selinfo" id="sSel" hidden><span>Editing selected stamp</span><button type="button" class="btn small" id="sDesel">Done</button></div>' +
-    '<label for="sTxt">Text</label><input type="text" id="sTxt" maxlength="28" autocomplete="off" spellcheck="false" placeholder="Your name &amp; Company">' +
+    '<label for="sTxt">Text</label><input type="text" id="sTxt" maxlength="48" autocomplete="off" spellcheck="false" placeholder="Your name &amp; Company">' +
     '<p class="guide">Insert your name &amp; Company to the stamp for record</p>' +
     "<label>Color</label>" +
     '<div class="sw" id="sSw">' + COLORS.map(function (c) { return '<button type="button" data-c="' + c + '" style="background:' + c + '" aria-label="Color ' + c + '"></button>'; }).join("") +
@@ -63,9 +63,23 @@
     $("sSizeV").textContent = tpl.size + "px"; $("sRotV").textContent = tpl.rot + "°";
     [].forEach.call($("sSw").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.getAttribute("data-c").toLowerCase() === tpl.color.toLowerCase()); });
   }
+  /* The preview window grows with the stamp and scales a long one down so it never clips */
+  function fitPreview() {
+    dom.pre.innerHTML = "";
+    var fit = document.createElement("div"), sc = document.createElement("div"), st = build(tpl.text || " ", cfgOf(), true);
+    fit.className = "fit"; sc.className = "scaler"; sc.appendChild(st); fit.appendChild(sc); dom.pre.appendChild(fit);
+    var w = st.offsetWidth, h = st.offsetHeight, a = Math.abs(tpl.rot) * Math.PI / 180;
+    var bw = w * Math.cos(a) + h * Math.sin(a), bh = w * Math.sin(a) + h * Math.cos(a);
+    var avail = Math.max(60, dom.pre.clientWidth - 28), k = Math.min(1, avail / bw);
+    fit.style.width = Math.ceil(bw * k) + "px"; fit.style.height = Math.ceil(bh * k) + "px";
+    sc.style.width = w + "px"; sc.style.height = h + "px";
+    sc.style.transform = "translate(-50%, -50%) scale(" + k + ")";
+    dom.pre.setAttribute("data-scaled", k < 1 ? "1" : "");
+  }
+  window.addEventListener("resize", function () { fitPreview(); });
   function refresh(fromPanel) {
     sync();
-    dom.pre.innerHTML = ""; dom.pre.appendChild(build(tpl.text || " ", cfgOf(), true));
+    fitPreview();
     if (sel) { paint(sel, cfgOf()); if (fromPanel === "text") sel.querySelector(".st").textContent = tpl.text; D.later(); }
     if (ghost) { var g = build(tpl.text || " ", cfgOf(), true); g.className = "pstamp ghost"; g.style.left = ghost.style.left; g.style.top = ghost.style.top; g.style.display = ghost.style.display; ghost.replaceWith(g); ghost = g; }
     try { localStorage.setItem(TPL_KEY, JSON.stringify(Object.assign({ text: tpl.text }, cfgOf()))); } catch (e) {}
@@ -93,7 +107,7 @@
   function press(x, y) {
     var pg = page(), pr = pg.getBoundingClientRect(), s = build(tpl.text || " ", cfgOf(), false);
     s.classList.add("slam"); pg.appendChild(s);
-    s.style.left = Math.round(x - pr.left - s.offsetWidth / 2) + "px"; s.style.top = Math.round(y - pr.top - s.offsetHeight / 2) + "px";
+    s.style.left = Math.round(Math.max(0, Math.min(x - pr.left - s.offsetWidth / 2, pr.width - s.offsetWidth))) + "px"; s.style.top = Math.round(y - pr.top - s.offsetHeight / 2) + "px";
     s.addEventListener("animationend", function (ev) { if (ev.target === s) s.classList.remove("slam"); });
     D.save();
   }
