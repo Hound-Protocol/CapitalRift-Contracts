@@ -49,6 +49,7 @@ body { overflow: hidden; }
 .studio .pre .pstamp { position: relative; }
 .studio .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
 .studio .hint { margin: 10px 0 0; font: 400 12px/1.45 var(--ui); letter-spacing: .02em; text-transform: none; color: var(--dim); }
+.studio .guide { margin: 7px 0 0; padding: 6px 9px; border-left: 2px solid var(--amb); background: rgba(201,162,74,.08); font: 400 12px/1.4 var(--ui); letter-spacing: .02em; text-transform: none; color: var(--amb); }
 .studio .selinfo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding: 6px 8px; border: 1px dashed var(--amb); color: var(--amb); font-size: 11px; }
 .studio .selinfo[hidden] { display: none; }
 .sw { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }

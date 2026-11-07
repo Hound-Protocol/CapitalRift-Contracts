@@ -27,7 +27,8 @@
     '<div class="row2"><button type="button" class="btn small primary" id="sMode">Stamp mode</button><button type="button" class="btn small" id="sAdd">Movable stamp</button></div>' +
     '<p class="hint" id="sHint">Stamp mode: your cursor carries the stamp, click anywhere on the page to press it. Esc to put it down.</p>' +
     '<div class="selinfo" id="sSel" hidden><span>Editing selected stamp</span><button type="button" class="btn small" id="sDesel">Done</button></div>' +
-    '<label for="sTxt">Text</label><input type="text" id="sTxt" maxlength="28" autocomplete="off" spellcheck="false">' +
+    '<label for="sTxt">Text</label><input type="text" id="sTxt" maxlength="28" autocomplete="off" spellcheck="false" placeholder="Your name &amp; Company">' +
+    '<p class="guide">Insert your name &amp; Company to the stamp for record</p>' +
     "<label>Color</label>" +
     '<div class="sw" id="sSw">' + COLORS.map(function (c) { return '<button type="button" data-c="' + c + '" style="background:' + c + '" aria-label="Color ' + c + '"></button>'; }).join("") +
     '<input type="color" id="sCol" aria-label="Custom color"></div>' +
