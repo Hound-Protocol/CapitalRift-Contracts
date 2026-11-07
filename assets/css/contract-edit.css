@@ -48,6 +48,7 @@ body { overflow: hidden; }
 .studio .pre { display: grid; place-items: center; min-height: 128px; padding: 20px 10px; overflow: hidden; background: repeating-linear-gradient(transparent 0 27px, rgba(29,106,138,.09) 27px 28px), #f8f5ed; border: 1px solid #b5945a; }
 .studio .pre .pstamp { position: relative; }
 .studio .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+#sMode, #sAdd { grid-column: 1 / -1; padding: 10px 8px; line-height: 1.25; }
 .studio .hint { margin: 10px 0 0; font: 400 12px/1.45 var(--ui); letter-spacing: .02em; text-transform: none; color: var(--dim); }
 .studio .guide { margin: 7px 0 0; padding: 6px 9px; border-left: 2px solid var(--amb); background: rgba(201,162,74,.08); font: 400 12px/1.4 var(--ui); letter-spacing: .02em; text-transform: none; color: var(--amb); }
 .studio .selinfo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding: 6px 8px; border: 1px dashed var(--amb); color: var(--amb); font-size: 11px; }

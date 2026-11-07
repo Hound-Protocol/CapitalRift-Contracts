@@ -24,7 +24,7 @@
   host.innerHTML =
     "<h3>Stamp workshop</h3>" +
     '<div class="pre" id="sPre" aria-label="Stamp preview"></div>' +
-    '<div class="row2"><button type="button" class="btn small primary" id="sMode">Stamp mode</button><button type="button" class="btn small" id="sAdd">Movable stamp</button></div>' +
+    '<div class="row2"><button type="button" class="btn small primary" id="sMode">Click here to engage stamp mode</button><button type="button" class="btn small" id="sAdd">Movable stamp</button></div>' +
     '<p class="hint" id="sHint">Stamp mode: your cursor carries the stamp, click anywhere on the page to press it. Esc to put it down.</p>' +
     '<div class="selinfo" id="sSel" hidden><span>Editing selected stamp</span><button type="button" class="btn small" id="sDesel">Done</button></div>' +
     '<label for="sTxt">Text</label><input type="text" id="sTxt" maxlength="28" autocomplete="off" spellcheck="false" placeholder="Your name &amp; Company">' +
@@ -99,7 +99,7 @@
   }
   function setMode(on) {
     mode = on; document.body.classList.toggle("stamping", on);
-    dom.mode.textContent = on ? "Stamping · Esc to stop" : "Stamp mode"; dom.mode.classList.toggle("sel", on);
+    dom.mode.textContent = on ? "Stamping · Esc to stop" : "Click here to engage stamp mode"; dom.mode.classList.toggle("sel", on);
     if (on) { select(null); ghost = build(tpl.text || " ", cfgOf(), true); ghost.className = "pstamp ghost"; ghost.style.display = "none"; document.body.appendChild(ghost); }
     else if (ghost) { ghost.remove(); ghost = null; }
   }
