@@ -17,7 +17,6 @@
   <div class="bar top">
     <b>Capital Rift · Private Contracts</b>
     <div class="tools" id="tools">
-      <button class="btn small" data-act="stamp" type="button">+ Stamp</button>
       <button class="btn small" data-act="paper" type="button">Paper</button>
       <button class="btn small" data-act="color" type="button">Folder color</button>
       <button class="btn small" data-act="print" type="button">Print / PDF</button>
@@ -25,7 +24,7 @@
     </div>
   </div>
 
-  <div class="view" id="view"><div class="wrapdoc">
+  <div class="view" id="view"><div class="layout"><aside class="studio" id="studio" aria-label="Stamp workshop"></aside><div class="wrapdoc">
   <article class="dossier in k-legal" id="doc" style="--g:#c9a24a;--gd:#7d5f15">
     <div class="clr ok"><i aria-hidden="true"></i><b class="f" contenteditable="true" data-ph="STATUS">Access granted</b><span class="f" contenteditable="true" data-ph="LEVEL">Private contract · Parties only</span></div>
     <div class="ds-tab"><b class="f" contenteditable="true" data-ph="PC-____">PC-0000</b><span class="f" contenteditable="true" data-ph="TYPE">Private contract</span></div>
@@ -105,14 +104,14 @@
       <footer class="ds-foot"><span class="f" contenteditable="true">PC-0000 · Private contract</span><span class="f" contenteditable="true">Fictional roleplay document for the game Capital Rift. Not a legal contract.</span></footer>
     </div></div>
   </article>
-  </div></div>
+  </div></div></div>
 
   <div class="bar bot"><span>Private contracts · roleplay</span><span>Click any text to edit · autosaves in this browser</span></div>
 </div>
 
 <script>
 (function () {
-  var KEY = "cr-private-contracts:v2", doc = document.getElementById("doc");
+  var KEY = "cr-private-contracts:v3", doc = document.getElementById("doc");
   var COLORS = ["red", "green", "amber", "blue"], ROTS = [-8, -3, 0, 4, 9, -14];
   var PAPERS = ["legal", "project", "guide", "policy", "procedure", "research", "technical", "decision", "community"];
   var FOLDERS = [["#c9a24a", "#7d5f15"], ["#e0453f", "#a3352b"], ["#5aa7d6", "#1d6a8a"], ["#f28c28", "#a8560f"], ["#7fbf8a", "#3b7446"], ["#c9d0d2", "#4d5a60"], ["#b07cd6", "#6e4a96"]];
@@ -147,44 +146,15 @@
     if (e.key === "Enter" && e.target.matches(".st, td.f, th.f, h1.f, h2.f, .ds-head .f, .ds-meta .f, .ds-tab .f, .clr .f, .ds-foot .f, .ds-cls .f")) { e.preventDefault(); e.target.blur(); }
   });
 
-  function makeStamp(text, c, r, x, y) {
-    var s = document.createElement("div");
-    s.className = "pstamp"; s.setAttribute("data-c", c); s.setAttribute("data-r", r);
-    s.style.setProperty("--r", r + "deg"); s.style.left = x + "px"; s.style.top = y + "px";
-    s.innerHTML = '<span class="st" contenteditable="true"></span><span class="ctl"><button class="drag" type="button" data-s="drag" title="Drag">✥</button><button type="button" data-s="color" title="Color">◐</button><button type="button" data-s="rot" title="Rotate">↻</button><button type="button" data-s="del" title="Delete">✕</button></span>';
-    s.querySelector(".st").textContent = text; return s;
-  }
-
   doc.addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     if (b.hasAttribute("data-rm")) { var r = b.closest("tr,li"); if (r) { r.remove(); save(); } return; }
-    if (b.dataset.s) {
-      var st = b.closest(".pstamp");
-      if (b.dataset.s === "del") st.remove();
-      if (b.dataset.s === "color") st.setAttribute("data-c", COLORS[(COLORS.indexOf(st.getAttribute("data-c")) + 1) % COLORS.length]);
-      if (b.dataset.s === "rot") { var n = ROTS[(ROTS.indexOf(+st.getAttribute("data-r")) + 1) % ROTS.length]; st.setAttribute("data-r", n); st.style.setProperty("--r", n + "deg"); }
-      save(); return;
-    }
     if (b.hasAttribute("data-add")) {
       var id = b.getAttribute("data-add"), el = document.getElementById(id), host = el.tagName === "TABLE" ? el.tBodies[0] : el;
       host.insertAdjacentHTML("beforeend", ROWS[id]);
       var f = host.lastElementChild.querySelector(".f"); if (f) f.focus(); save();
     }
   });
-
-  var drag = null;
-  doc.addEventListener("pointerdown", function (e) {
-    var h = e.target.closest(".drag"); if (!h) return;
-    var st = h.closest(".pstamp"), pr = page().getBoundingClientRect();
-    drag = { st: st, dx: e.clientX - pr.left - st.offsetLeft, dy: e.clientY - pr.top - st.offsetTop };
-    h.setPointerCapture(e.pointerId); e.preventDefault();
-  });
-  doc.addEventListener("pointermove", function (e) {
-    if (!drag) return; var pr = page().getBoundingClientRect();
-    drag.st.style.left = Math.max(0, e.clientX - pr.left - drag.dx) + "px";
-    drag.st.style.top = Math.max(0, e.clientY - pr.top - drag.dy) + "px";
-  });
-  doc.addEventListener("pointerup", function () { if (drag) { drag = null; save(); } });
 
   document.getElementById("tools").addEventListener("click", function (e) {
     var a = e.target.dataset.act; if (!a) return;
@@ -197,17 +167,17 @@
       var g = (doc.style.getPropertyValue("--g") || "").trim(), i = FOLDERS.map(function (f) { return f[0]; }).indexOf(g), n = FOLDERS[(i + 1) % FOLDERS.length];
       doc.style.setProperty("--g", n[0]); doc.style.setProperty("--gd", n[1]); save();
     }
-    if (a === "stamp") {
-      var txt = prompt("Stamp text (for example APPROVED, PAID, CONFIDENTIAL, VOID, URGENT):", "APPROVED");
-      if (txt) { var n = page().querySelectorAll(".pstamp").length; page().appendChild(makeStamp(txt, COLORS[n % COLORS.length], -8, Math.max(40, page().clientWidth - 360), 200 + n * 60)); save(); }
-    }
     if (a === "reset" && confirm("Clear everything and start a new blank contract?")) {
       doc.className = pristine.cls; if (pristine.style) doc.setAttribute("style", pristine.style); doc.innerHTML = pristine.html;
       try { localStorage.removeItem(KEY); } catch (x) {} replay();
     }
   });
+  window.CRDoc = { doc: doc, save: save, later: later, page: page };
   load();
 })();
+</script>
+<script src="assets/js/studio.js"></script>
+<script>(function(){})();
 </script>
 </body>
 </html>
