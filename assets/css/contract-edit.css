@@ -1,0 +1,64 @@
+/* Capital Rift · Private Contracts: editing layer on top of the copied Joint Operations styles (contract.css) */
+body { overflow: hidden; }
+.view { position: absolute; top: 56px; bottom: 46px; left: 0; right: 0; z-index: 5; overflow-y: auto; overflow-x: hidden; padding: 28px 44px 60px; scrollbar-width: thin; }
+.view .wrapdoc { max-width: 980px; margin: 0 auto; }
+.bar .tools { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.bar b { font-weight: 400; color: var(--amb); letter-spacing: .2em; }
+
+/* Click-to-edit text */
+.f { outline: none; border-radius: 1px; cursor: text; min-width: 2ch; }
+.f:hover { background: rgba(0,0,0,.05); }
+.f:focus { background: rgba(201,162,74,.18); box-shadow: 0 0 0 1px rgba(160,110,20,.65); }
+.f:empty::before { content: attr(data-ph); color: rgba(0,0,0,.34); letter-spacing: .06em; }
+.ds-title.f:empty::before { color: rgba(0,0,0,.28); }
+.ds-class .f, .ds-head .f { display: inline-block; }
+.ds-body .f { display: block; }
+.ds-body td.f, .ds-body th.f, .ds-body h2.f, .ds-meta .f, .ds-tab .f, .clr .f, .ds-foot .f, .ds-head .f, .ds-cls .f, .ds-title.f { display: revert; }
+.ds-meta .f, .ds-foot .f, .ds-tab .f, .clr .f { display: inline-block; }
+.ds-body p.f, .ds-body div.f { min-height: 1.6em; margin: 0 0 12px; }
+.ds-cls .f { display: block; text-align: center; }
+.clr .f { min-width: 3ch; }
+.clr .f:hover { background: rgba(255,255,255,.08); }
+.clr .f:focus { background: rgba(127,191,138,.18); box-shadow: 0 0 0 1px var(--ok); }
+.ds-tab .f:hover { background: rgba(0,0,0,.08); }
+
+/* Tables and lists inside the page */
+.ds-body table { width: 100%; }
+.ds-body td.x, .ds-body th.x { width: 30px; min-width: 30px; text-align: center; padding: 4px; }
+.ds-body td:first-child { white-space: normal; }
+.ds-body ul.tasks { list-style: none; margin: 0 0 12px; padding: 0; }
+.ds-body ul.tasks li { display: flex; align-items: flex-start; gap: 10px; margin: 0; padding: 4px 0; border-bottom: 1px dashed rgba(0,0,0,.18); }
+.ds-body ul.tasks li > .f { flex: 1; }
+.ds-body ul.tasks input { margin-top: 6px; accent-color: #7d5f15; }
+.mini-x, .add-btn { font: 400 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; background: none; cursor: pointer; color: #6b6f70; border: 1px solid rgba(0,0,0,.28); padding: 3px 8px; }
+.mini-x:hover { color: #a3241b; border-color: #a3241b; }
+.add-btn { margin: 0 0 14px; border-style: dashed; padding: 6px 12px; }
+.add-btn:hover { color: var(--gd); border-color: var(--gd); }
+.ds-warn.f { display: block; }
+
+/* Stamps: same look as the dossier's classification stamp, free to move */
+.pstamp { position: absolute; z-index: 6; display: inline-flex; align-items: center; padding: 6px 18px; border: 3px double var(--c); color: var(--c); background: color-mix(in srgb, var(--c) 7%, transparent); font: 700 26px/1.1 var(--mono); letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; transform: rotate(var(--r, -8deg)); mix-blend-mode: multiply; opacity: .88; user-select: none; }
+.pstamp[data-c=red] { --c: #a3241b; }
+.pstamp[data-c=green] { --c: #2f7a45; }
+.pstamp[data-c=amber] { --c: #a8650a; }
+.pstamp[data-c=blue] { --c: #1d6a8a; }
+.pstamp .st { outline: none; min-width: 3ch; cursor: text; user-select: text; }
+.pstamp .ctl { position: absolute; right: -32px; top: -8px; display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity .15s; transform: rotate(calc(var(--r, -8deg) * -1)); mix-blend-mode: normal; }
+.pstamp:hover .ctl, .pstamp:focus-within .ctl { opacity: 1; }
+.pstamp .ctl button { width: 24px; height: 24px; padding: 0; font: 400 13px/1 var(--mono); letter-spacing: 0; background: #0c0f10; color: var(--fg); border: 1px solid var(--dim); cursor: pointer; }
+.pstamp .ctl button:hover { border-color: var(--amb); color: var(--amb); }
+.pstamp .drag { cursor: grab; touch-action: none; }
+
+@media (max-width: 700px) { .view { padding: 14px 10px 50px; } .pstamp { font-size: 18px; } .ds-page { padding: 30px 22px 22px 54px; } .ds-head { grid-template-columns: 1fr; gap: 8px; } .ds-head .ds-class { justify-self: start; text-align: left; } }
+
+@media print {
+  body { overflow: visible; background: #fff; }
+  .stage, .bar, .add-btn, .mini-x, .ctl, .view > .clr { display: none !important; }
+  .stage, html, body { height: auto; }
+  .view { position: static; overflow: visible; padding: 0; }
+  .dossier .ds-folder, .dossier .ds-tab, .dossier .ds-page, .dossier .ds-body > * { animation: none !important; }
+  .ds-folder { box-shadow: none; }
+  .f:empty::before { color: rgba(0,0,0,.3); }
+  .ds-folder, .ds-tab, .ds-page, .ds-cls, .pstamp { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  td.x, th.x { display: none; }
+}
